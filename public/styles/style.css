@@ -1,0 +1,170 @@
+/* Reset */
+/*
+Andy Bell's CSS Reset
+https://andy-bell.co.uk/a-modern-css-reset/
+*/
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+   scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utilities */
+.uppercase {
+  text-transform: uppercase;
+}
+
+.ta-center {
+  text-align: center;
+}
+
+.fs-lg {
+  font-size: calc(2.75rem + 0.390625vw);
+}
+
+.fs-sm {
+  font-size: calc(0.875rem + 0.390625vw);
+}
+
+.opacity-80 {
+  opacity: 0.8;
+}
+
+.br-8 {
+  border-radius: 0.5rem;
+}
+
+.br-16 {
+  border-radius: 1rem;
+}
+
+.unformatted-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flex-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Styling */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: calc(1.15rem + 0.390625vw);
+  font-weight: 300;
+  background: linear-gradient(-35deg, hsl(167, 26%, 70%), hsl(260, 25%, 67%));
+  background-repeat: no-repeat;
+  background-size: 300% 500%;
+  animation: gradient 100s infinite;
+
+  display: grid;
+  place-items: center;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: top left;
+  }
+  50% {
+    background-position: bottom right;
+  }
+  100% {
+    background-position: top left;
+  }
+}
+
+main {
+  width: 30rem;
+}
+
+.weather-card {
+  background-color: hsl(0, 0%, 100%);
+  padding: 1rem;
+  width: 100%;
+  box-shadow: 4px 4px 12px 4px hsla(0, 0%, 0%, 0.1);
+}
+
+.weather-display {
+  padding: 1rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.weather-details {
+  text-align: center;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(231, 8%, 17%);
+  padding: 1rem 2rem;
+}

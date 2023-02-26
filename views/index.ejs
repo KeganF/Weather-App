@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+  <main>
+    <div class="weather-card br-16">
+      <div class="weather-display">
+        <p class="uppercase"><%= cityName %></p>
+        <div class="current-weather flex-group">
+          <p class="fs-lg"><%= temp %>&deg</p>
+          <div>
+            <p><%= conditions %></p>
+            <p class="fs-sm opacity-80">feels like <%= feelsLike %>&deg</p>
+          </div>
+          <img class="weather-icon" src=<%= wicon %> alt="Weather icon">
+        </div>
+      </div>
+      
+      <div class="weather-details br-8">
+        <ul class="ta-center unformatted-list flex-group">
+          <li>
+            <p class="fs-sm opacity-80">wind</p>
+            <p><%= windSpeed %><span class="fs-sm opacity-80">km/h</span></p>
+          </li>
+          <li>
+            <p class="fs-sm opacity-80">humidity</p>
+            <p><%= humidity %><span class="fs-sm opacity-80">%</span></p>
+          </li>
+          <li>
+            <p class="fs-sm opacity-80">pressure</p>
+            <p><%= pressure %><span class="fs-sm opacity-80">kPa</span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
