@@ -1,6 +1,6 @@
 # Node.JS Weather App
 
-![](screenshot.png)
+![](public/screenshots/screenshot.png)
 
 ## Project Details
 
@@ -12,3 +12,10 @@ Moving forward I want to add more features such as the ability to search for and
 
 For privacy and security purposes, the city and apiKey fields in weather.js were made blank before sharing the code.
 You can check out OpenWeather [here](https://openweathermap.org/) to sign up for a free API key, and from there you can set the city to wherever you would like!
+
+
+## Updates
+
+- March 1st, 2023: First test implementing a search bar. This is my first time attempting to create a search bar feature, so there's some research I need to do on error handling before I continue working on the project so that invalid city names don't cause issues.
+
+![](public/screenshots/screenshot2.png)

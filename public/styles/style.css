@@ -149,6 +149,34 @@ main {
   width: 30rem;
 }
 
+.searchbar {
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  transition: border 200ms ease;
+}
+
+.searchbar:focus-within {
+  border: 1px solid hsl(231, 8%, 17%);
+}
+
+input,
+input:focus {
+  border: none;
+  outline: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 .weather-card {
   background-color: hsl(0, 0%, 100%);
   padding: 1rem;
