@@ -1,6 +1,6 @@
 # Node.JS Weather App
 
-![](public/screenshots/screenshot.png)
+![](public/screenshots/screenshot4-weather.png)
 
 ## Project Details
 
