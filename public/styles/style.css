@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+
 /* Reset */
 /*
 Andy Bell's CSS Reset
@@ -95,6 +97,10 @@ select {
   font-size: calc(0.875rem + 0.390625vw);
 }
 
+.bg-white {
+  background-color: hsl(0, 0%, 100%);
+}
+
 .opacity-80 {
   opacity: 0.8;
 }
@@ -107,16 +113,33 @@ select {
   border-radius: 1rem;
 }
 
+.padd-16 {
+  padding: 1rem;
+}
+
+.padd-32 {
+  padding: 2rem;
+}
+
 .unformatted-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.shadow {
+  box-shadow: 4px 4px 12px 4px hsla(0, 0%, 0%, 0.1);
+}
+
 .flex-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.grid-gap {
+  display: grid;
+  gap: 2rem;
 }
 
 /* Styling */
@@ -147,6 +170,11 @@ body {
 
 main {
   width: 30rem;
+}
+
+.title {
+  font-size: 2rem;
+  line-height: 1.2;
 }
 
 .searchbar {
@@ -181,7 +209,6 @@ button:hover {
   background-color: hsl(0, 0%, 100%);
   padding: 1rem;
   width: 100%;
-  box-shadow: 4px 4px 12px 4px hsla(0, 0%, 0%, 0.1);
 }
 
 .weather-display {

@@ -5,25 +5,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-  <main>
-    <div class="weather-card br-16">
+  <main class="grid-gap">
+    <div class="bg-white padd-16 br-16 shadow">
+      <form action="http://localhost:8080/" method="GET">
+        <div class="searchbar">
+          <input type="text" name="city" id="city" placeholder="Search for a city">
+          <button><img width="30" src="/images/search.png" alt=""></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="weather-card br-16 shadow">
       <div class="weather-display">
-        
-        <form action="http://localhost:8080/" method="GET">
-          <div class="searchbar">
-            <input type="text" name="city" id="city" placeholder="Search for a city">
-            <button><img width="30" src="/images/search.png" alt=""></button>
-          </div>
-        </form>
-        
         <p class="uppercase"><%= cityName %></p>
         <div class="current-weather flex-group">
           <p class="fs-lg"><%= temp %>&deg</p>
