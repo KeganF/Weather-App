@@ -1,73 +1,115 @@
 // Dependencies
-var express = require("express");
-var path = require("path");
-var request = require("request");
+var express = require('express');
+var path = require('path');
+var request = require('request');
 
-var weatherApp = express();
+const fetch = (...args) =>
+	import('node-fetch').then(({default: fetch}) => fetch(...args));
+
+
+var app = express();
 const port = 8080;
 
+
 // Set view engine
-weatherApp.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 // App configuration
-weatherApp.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
+const apiKey = 'yourapikeygoeshere';
 var cityString;
+var lat = '';
+var lon = '';
 
-weatherApp.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, "views/index.html"));
-    
-    if (req.query.city != undefined) {
-        cityString = formatQueryStringToCityName(req.query.city);
-        res.redirect('/current-weather');
-    }
+
+// Routes
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-weatherApp.get('/current-weather', function(req, res) {
-    // You can sign up for a free API key here: https://openweathermap.org/
-    const apiKey = "yourapikeyhere";
-    var url = "http://api.openweathermap.org/data/2.5/weather?q=" + cityString + "&units=metric&appid=" + apiKey;
+
+app.post('/location', function(req, res) {
+    cityString = formatQueryStringToCityName(req.body.city);
+    res.redirect('/location-data');
+});
+
+
+app.get('/location-data', async function(req, res) {
+    var url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityString + '&limit=1&appid=' + apiKey;
     
+    try {
+        const res = await fetch(url);
+        const json = await res.json();
+        lat = json[0].lat;
+        lon = json[0].lon;
+    }
+    catch (err) {
+        console.log('error: ' + err);
+    }
+    res.redirect('/weather');
+});
+
+
+app.get('/weather', function(req, res) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=metric&appid=' + apiKey;
+    var forecast = [];
+
     request(url, function(err, response, body) {
         if (err) {
-            console.log("Error: " + err);
+            console.log('Error: ' + err);
         }
         else {
             try {
                 var weather = JSON.parse(body);
-
-                var iconCode = weather.weather[0].icon;
-                var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
                 
-                res.render("currentWeather", { 
-                    title: "Weather", 
-                    cityName: weather.name,
-                    wicon: iconUrl,
-                    temp: parseInt(weather.main.temp),
-                    feelsLike: parseInt(weather.main.feels_like),
-                    conditions: weather.weather[0].description,
-                    windSpeed: weather.wind.speed,
-                    pressure: weather.main.pressure / 10,
-                    humidity: weather.main.humidity
+                for (var i = 0; i < 5; i++) {
+                    var iconCode = weather.list[i].weather[0].icon;
+                    var iconUrl = 'http://openweathermap.org/img/wn/' + iconCode + '@2x.png';
+                    
+                    const forecastDate = new Date(Date.parse(weather.list[i].dt_txt));
+                    const fDate = (forecastDate.getMonth() + 1) + '/' + forecastDate.getDate();
+                    const fTime = forecastDate.getHours() + ':00';
+
+                    forecast.push({
+                        city: weather.city.name,
+                        time: fTime, 
+                        date: fDate, 
+                        wIcon: iconUrl, 
+                        conditions: weather.list[i].weather[0].description, 
+                        temp: parseInt(weather.list[i].main.temp), 
+                        feelsLike: parseInt(weather.list[i].main.feels_like),
+                        windSpeed: weather.list[0].wind.speed,
+                        pressure: weather.list[0].main.pressure / 10,
+                        humidity: weather.list[0].main.humidity,
+                    });
+                }
+
+                res.render('currentWeather', { 
+                    title: 'Weather', 
+                    forecast: forecast
                 });
     
-                console.log(`Weather data for ${weather.name} has been rendered to currentWeather.ejs`);
+                console.log('Weather data rendered to currentWeather.ejs');
             }
             catch {
-                console.log(`${cityString} was an invalid input, redirecting to error page.`);
+                console.log('Redirecting to error page');
                 res.redirect('/error');
             }
         }
     });
 });
 
-weatherApp.get('/error', function(req, res) {
-    res.sendFile(path.join(__dirname, "views/error.html"));
+
+app.get('/error', function(req, res) {
+    res.sendFile(path.join(__dirname, 'views/error.html'));
 });
 
+
 // Create server
-weatherApp.listen(port, () => console.log(`Weather App is running on port ${port}.`));
+app.listen(port, () => console.log(`Weather App is running on port ${port}.`));
 
 
 // Converts query string to appropriate city name for OpenWeather API to use

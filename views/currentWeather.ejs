@@ -11,7 +11,7 @@
 <body>
   <main class="grid-gap">
     <div class="bg-white padd-16 br-16 shadow">
-      <form action="http://localhost:8080/" method="GET">
+      <form action="/location" method="POST">
         <div class="searchbar">
           <input type="text" name="city" id="city" placeholder="Search for a city">
           <button><img width="30" src="/images/search.png" alt=""></button>
@@ -21,14 +21,14 @@
 
     <div class="weather-card br-16 shadow">
       <div class="weather-display">
-        <p class="uppercase"><%= cityName %></p>
+        <p class="uppercase"><%= forecast[0].city %></p>
         <div class="current-weather flex-group">
-          <p class="fs-lg"><%= temp %>&deg</p>
+          <p class="fs-lg"><%= forecast[0].temp %>&deg</p>
           <div>
-            <p><%= conditions %></p>
-            <p class="fs-sm opacity-80">feels like <%= feelsLike %>&deg</p>
+            <p><%= forecast[0].conditions %></p>
+            <p class="fs-sm opacity-80">feels like <%= forecast[0].feelsLike %>&deg</p>
           </div>
-          <img class="weather-icon" src=<%= wicon %> alt="Weather icon">
+          <img class="weather-icon" src=<%= forecast[0].wIcon %> alt="Weather icon">
         </div>
       </div>
       
@@ -36,19 +36,36 @@
         <ul class="ta-center unformatted-list flex-group">
           <li>
             <p class="fs-sm opacity-80">wind</p>
-            <p><%= windSpeed %><span class="fs-sm opacity-80">km/h</span></p>
+            <p><%= forecast[0].windSpeed %><span class="fs-sm opacity-80">km/h</span></p>
           </li>
           <li>
             <p class="fs-sm opacity-80">humidity</p>
-            <p><%= humidity %><span class="fs-sm opacity-80">%</span></p>
+            <p><%= forecast[0].humidity %><span class="fs-sm opacity-80">%</span></p>
           </li>
           <li>
             <p class="fs-sm opacity-80">pressure</p>
-            <p><%= pressure %><span class="fs-sm opacity-80">kPa</span></p>
+            <p><%= forecast[0].pressure %><span class="fs-sm opacity-80">kPa</span></p>
           </li>
         </ul>
       </div>
     </div>
+
+    <ul class="forecast unformatted-list">
+      <% for (weather of forecast) { %>
+        <li>
+          <div class="forecast-card ta-center bg-white br-8 shadow">
+            <p class="fw-500"><%= weather.time %></p>
+            <p class="fs-sm opacity-80"><%= weather.date %></p>
+            <img src=<%= weather.wIcon %> alt="Weather icon">
+            <p class="fs-sm opacity-80"><%= weather.conditions %></p>
+            <div class="flex-group">
+              <p class="fw-500"><%= weather.temp %>&deg</p>
+              <p class="opacity-80"><%= weather.feelsLike %>&deg</p>
+            </div>
+          </div>
+        </li>
+      <% } %>
+    </ul>
   </main>
 </body>
 </html>
