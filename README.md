@@ -4,9 +4,9 @@
 
 ## Project Details
 
-This is a small weather widget I made using Node.JS, the OpenWeather API, the Express framework, and EJS templating.
+This is a small weather app I'm making using Node.JS, the OpenWeather API, the Express framework, and EJS templating.
 It can provide weather data for your local area including temperature, weather conditions, wind speeds, humidity, and pressure.
-Moving forward I want to add more weather data to the results.
+It can also show forecaster weather conditions and temperatures.
 
 ## Notice Before Using
 
