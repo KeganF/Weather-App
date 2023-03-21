@@ -1,7 +1,6 @@
 // Dependencies
 var express = require('express');
 var path = require('path');
-var request = require('request');
 
 const fetch = (...args) =>
 	import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -21,8 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const apiKey = 'yourapikeygoeshere';
 var cityString;
-var lat = '';
-var lon = '';
+var lat;
+var lon;
 
 
 // Routes
@@ -41,8 +40,8 @@ app.get('/location-data', async function(req, res) {
     var url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityString + '&limit=1&appid=' + apiKey;
     
     try {
-        const res = await fetch(url);
-        const json = await res.json();
+        const response = await fetch(url);
+        const json = await response.json();
         lat = json[0].lat;
         lon = json[0].lon;
     }
@@ -52,53 +51,60 @@ app.get('/location-data', async function(req, res) {
     res.redirect('/weather');
 });
 
+// Returns API data for both weather and forecast as one result
+async function getWeather() {
+    var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityString + '&units=metric&appid=' + apiKey;
+    var forecastUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=metric&appid=' + apiKey;
+
+    const weatherPromise = await fetch(weatherUrl);
+    const forecastPromise = await fetch(forecastUrl);
+
+    const result = {
+        weather: await weatherPromise.json(),
+        forecast: await forecastPromise.json()
+    };
+
+    return result;
+}
 
 app.get('/weather', function(req, res) {
-    var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=metric&appid=' + apiKey;
-    var forecast = [];
-
-    request(url, function(err, response, body) {
-        if (err) {
-            console.log('Error: ' + err);
-        }
-        else {
-            try {
-                var weather = JSON.parse(body);
-                
-                for (var i = 0; i < 5; i++) {
-                    var iconCode = weather.list[i].weather[0].icon;
-                    var iconUrl = 'http://openweathermap.org/img/wn/' + iconCode + '@2x.png';
-                    
-                    const forecastDate = new Date(Date.parse(weather.list[i].dt_txt));
-                    const fDate = (forecastDate.getMonth() + 1) + '/' + forecastDate.getDate();
-                    const fTime = forecastDate.getHours() + ':00';
-
-                    forecast.push({
-                        city: weather.city.name,
-                        time: fTime, 
-                        date: fDate, 
-                        wIcon: iconUrl, 
-                        conditions: weather.list[i].weather[0].description, 
-                        temp: parseInt(weather.list[i].main.temp), 
-                        feelsLike: parseInt(weather.list[i].main.feels_like),
-                        windSpeed: weather.list[0].wind.speed,
-                        pressure: weather.list[0].main.pressure / 10,
-                        humidity: weather.list[0].main.humidity,
-                    });
-                }
-
-                res.render('currentWeather', { 
-                    title: 'Weather', 
-                    forecast: forecast
-                });
     
-                console.log('Weather data rendered to currentWeather.ejs');
+    getWeather().then(function(result) {
+        try {
+            const weatherData = {
+                city:       result.weather.name,
+                temp:       parseInt(result.weather.main.temp),
+                feelsLike:  parseInt(result.weather.main.feels_like),
+                conditions: result.weather.weather[0].description,
+                wIcon:      'http://openweathermap.org/img/wn/' + result.weather.weather[0].icon + '@2x.png',
+                wind:       result.weather.wind.speed,
+                humidity:   result.weather.main.humidity,
+                pressure:   result.weather.main.pressure
+            };
+    
+            var forecastData = [];
+            for (var i = 0; i < 5; i++) {            
+                const forecastDate = new Date(Date.parse(result.forecast.list[i].dt_txt));
+    
+                forecastData.push({
+                    city:       result.forecast.city.name,
+                    time:       forecastDate.getHours() + ':00', 
+                    wIcon:      'http://openweathermap.org/img/wn/' + result.forecast.list[i].weather[0].icon + '@2x.png', 
+                    conditions: result.forecast.list[i].weather[0].description, 
+                    temp:       parseInt(result.forecast.list[i].main.temp), 
+                }); 
             }
-            catch {
-                console.log('Redirecting to error page');
-                res.redirect('/error');
-            }
+    
+            res.render('currentWeather', {
+                weather: weatherData,
+                forecast: forecastData
+            });
         }
+        catch (err) {
+            console.log('Error: ' + err);
+            res.redirect('/error');
+        }
+
     });
 });
 

@@ -16,8 +16,17 @@ You can check out OpenWeather [here](https://openweathermap.org/) to sign up for
 
 ## Updates
 
-- March 13th, 2023: Added weather forecast in 3 hour increments. Right now the "current weather" being displayed is the data from the first element in the forecast array, meaning it's not actually the current weather. This is only temporary, as I plan on changing where and how some of the information is being displayed, and this update is more so just to document the inclusion of the forecast feature.
+- March 21, 2023:
+    - Current weather and forecast are now two separate sets of data, fixing the issue mentioned in the previous update.
+    - Request has been fully replaced by Fetch.
 
-- March 7th, 2023: First solution for error handling. After a bit of research and some experimenting, I implemented a way to prevent invalid city names from breaking the program. The section of code that normally grabs and displays the weather data now throws an error and redirects users to an error page when an invalid city name is entered. I'm still keeping an eye out for what's considered best practice for this situation, and will continue to update my solution as I go.
+- March 13, 2023: 
+    - Added weather forecast in 3 hour increments.
+    - "current weather" being displayed is the data from the first element in the forecast array, meaning its not actually the current weather (ahead by 3 hours). This is only temporary while I work on displaying the data separately
 
-- March 1st, 2023: First test implementing a search bar. This is my first time attempting to create a search bar feature, so there's some research I need to do on error handling before I continue working on the project so that invalid city names don't cause issues.
+- March 7, 2023: 
+    - First time attempting to implement error handling.
+    - Invalid city names will redirect to an error page.
+
+- March 1, 2023: 
+    - First test implementing a search bar.
